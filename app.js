@@ -35,6 +35,9 @@ ardstalker.on("edited_message", (msg) => {
   if (typeof msg.location !== "undefined") {
     // ardstalker.sendMessage(msg.chat.id, "This is a location");
     liveLocationUpdatePublisher(myGFLocationMsgID, msg);
+    if (typeof msg.location.live_period === "undefined")
+      // ardstalker.sendMessage(msg.chat.id, "You have stopped live location");
+      liveLocationUpdateHalter(myGFLocationMsgID, msg);
   }
 });
 
@@ -112,7 +115,7 @@ const sendLocationToUser = (
       if (isMyGF) myGFLocationMsgID = msg.message_id;
     });
 
-const liveLocationUpdatePublisher = (receiverSideMsgID, msg, timer = 900) => {
+const liveLocationUpdatePublisher = (receiverSideMsgID, msg) => {
   debugMsg({
     message: `Chat ID: ${msg.chat.id}`,
   });
@@ -128,4 +131,21 @@ const liveLocationUpdatePublisher = (receiverSideMsgID, msg, timer = 900) => {
     msg.location.longitude,
     { chat_id: myUser.id, message_id: receiverSideMsgID }
   );
+};
+
+const liveLocationUpdateHalter = (receiverSideMsgID, msg) => {
+  debugMsg({
+    message: `Chat ID: ${msg.chat.id}`,
+  });
+  debugMsg({
+    message: `Sender Message ID: ${msg.message_id}`,
+  });
+  debugMsg({
+    message: `Receiver Side Message ID: ${receiverSideMsgID}`,
+  });
+
+  ardstalker.stopMessageLiveLocation({
+    chat_id: myUser.id,
+    message_id: receiverSideMsgID,
+  });
 };
