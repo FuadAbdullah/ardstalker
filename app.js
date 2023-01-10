@@ -1,17 +1,18 @@
 const TelegramBot = require("node-telegram-bot-api");
+require('dotenv').config();
 
-const token = "5846017464:AAEueYZzggOflHOm6nyBZVf3H5RAJgMZfw4";
+const token = process.env.TELEGRAM_TOKEN;
 const ardstalker = new TelegramBot(token, {
   polling: true,
 });
 
 const myUser = {
-  id: 493412172,
-  username: "atipoad",
+  id: process.env.MY_ID,
+  username: process.env.MY_USERNAME,
 }; // atipoad user id
 const yeemunUser = {
-  id: 1350135933,
-  username: "yeemun_ooi",
+  id: process.env.YEEMUN_ID,
+  username: process.env.YEEMUN_USERNAME,
 }; // atipoad user id
 
 // Repeat the text given
